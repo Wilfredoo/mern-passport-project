@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const app = express();
 const { dbURI } = require("./config/keys");
 const users = require("./routes/users");
@@ -9,6 +10,9 @@ mongoose
   .connect(dbURI, { useNewUrlParser: true })
   .then(() => console.log("connected to db"))
   .catch(err => console.log(err));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // routes
 app.use("/api/users", users);
