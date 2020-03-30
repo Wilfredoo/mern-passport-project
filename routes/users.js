@@ -10,12 +10,11 @@ router.get("/", (req, res) => {
 
 router.post("/register", (req, res) => {
   // validation
-  console.log("lama revolution", req.body);
   const { error } = regValidate(req.body);
   if (error) {
     return res.status(400).json({
       status: "error",
-      type: error.details[0].path,
+      type: error.details[0].path[0],
       msg: error.details[0].message
     });
   }
