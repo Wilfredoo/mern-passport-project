@@ -1,10 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
-const { Users, regValidate, logValidate } = require("../models/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const jwt_decode = require("jwt-decode");
 const keys = require("../config/keys");
+const { Users, regValidate, logValidate } = require("../models/Users");
+
+//authentication
+const auth = require("../config/auth");
 
 router.get("/", (req, res) => {
   res.send("Hello users api dog cat");
@@ -80,9 +84,13 @@ router.post("/login", (req, res) => {
           email: user.email
         };
         jwt.sign(payload, keys.secretKey, { expiresIn: 3600 }, (err, token) => {
+          // how to get user from token
+          const decode = jwt_decode(token);
+
           res.json({
             success: true,
-            token: "Bearer " + token
+            token: "Bearer " + token,
+            decode: decode
           });
         });
       } else {
@@ -95,6 +103,10 @@ router.post("/login", (req, res) => {
       }
     });
   });
+});
+
+router.get("/current", auth, (req, res) => {
+  res.send("Success, you can now visit this route traveler");
 });
 
 // export
