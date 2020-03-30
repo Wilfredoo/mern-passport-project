@@ -3,9 +3,9 @@ import axios from "axios";
 
 class Register extends Component {
   state = {
-    username: "asd",
-    email: "asd@asd.com",
-    password: "asdasdasd",
+    username: "",
+    email: "",
+    password: "",
     errors: {}
   };
 
