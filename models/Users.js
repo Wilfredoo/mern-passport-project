@@ -42,5 +42,16 @@ function registrationValidation(user) {
   return Joi.validate(user, schema);
 }
 
+function loginValidation(user) {
+  const schema = {
+    email: Joi.string()
+      .email()
+      .required(),
+    password: Joi.string().required()
+  };
+  return Joi.validate(user, schema);
+}
+
 exports.Users = Users;
 exports.regValidate = registrationValidation;
+exports.logValidate = loginValidation;

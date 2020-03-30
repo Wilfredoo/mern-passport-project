@@ -5,7 +5,7 @@ class Header extends Component {
   render() {
     return (
       <header>
-        <nav className="navbar navbar-dark bg-dark">
+        <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
           <div className="container">
             <Link to="/" className="navbar-brand">
               Auth App
@@ -17,7 +17,7 @@ class Header extends Component {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to="/login" className="nav-link">
+                <NavLink to="/login" className=" nav-link ">
                   Login
                 </NavLink>
               </li>
