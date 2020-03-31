@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // routes
 app.use("/api/users", users);
+app.use("/api/products", products);
 
 // listen
 const port = process.env.PORT || 5000;
