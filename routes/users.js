@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const jwt_decode = require("jwt-decode");
 const keys = require("../config/keys");
 const { Users, regValidate, logValidate } = require("../models/Users");
+const passport = require("passport");
 
 //authentication
 const auth = require("../config/auth");
@@ -105,9 +106,17 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.get("/current", auth, (req, res) => {
-  res.send("Success, you can now visit this route traveler");
-});
+// router.get("/current", auth, (req, res) => {
+//   res.send("Success, you can now visit this route traveler");
+// });
+
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.send("Success, you can now visit this route traveler");
+  }
+);
 
 // export
 module.exports = router;

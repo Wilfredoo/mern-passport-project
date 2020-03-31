@@ -1,10 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-
 const app = express();
 const { dbURI } = require("./config/keys");
 const users = require("./routes/users");
+const products = require("./routes/products");
+
+const passport = require("passport");
+
+// auth with passport
+app.use(passport.initialize());
+
+require("./config/passport")(passport);
 
 //connect
 mongoose
