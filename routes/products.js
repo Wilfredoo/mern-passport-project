@@ -21,7 +21,7 @@ class APIfeatures {
     return this;
   }
   sorting() {
-    if (this.query.sort) {
+    if (this.queryString.sort) {
       const sortby = this.queryString.sort.split(",").join(" ");
       this.query = this.query.sort(sortby);
     } else {
@@ -29,7 +29,13 @@ class APIfeatures {
     }
     return this;
   }
-  paginating() {}
+  paginating() {
+    const page = this.queryString.page * 1 || 1;
+    const limit = this.queryString.limit * 1 || 3;
+    const skip = (page - 1) * limit;
+    this.query = this.query.skip(skip).limit(limit);
+    return this;
+  }
 }
 
 // get all products
@@ -40,7 +46,8 @@ router.get("/", async (req, res) => {
 
     const features = new APIfeatures(Products.find(), req.query)
       .filtering()
-      .sorting();
+      .sorting()
+      .paginating();
     console.log("req3", req.query);
 
     const products = await features.query;
