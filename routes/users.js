@@ -75,9 +75,7 @@ router.post("/login", (req, res) => {
     }
 
     bcrypt.compare(req.body.password, user.password).then(isMatch => {
-      console.log("doggo", req.body, isMatch);
       if (isMatch) {
-        console.log("it is known");
         // generate token
         const payload = {
           id: user.id,
@@ -95,7 +93,6 @@ router.post("/login", (req, res) => {
           });
         });
       } else {
-        console.log("nanana");
         return res.status(400).json({
           status: "error",
           type: "password",

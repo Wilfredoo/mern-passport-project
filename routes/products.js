@@ -2,11 +2,48 @@ const express = require("express");
 const router = express.Router();
 const { Products } = require("../models/Products");
 
+// advanced filtering and pagination
+class APIfeatures {
+  constructor(query, queryString) {
+    this.query = query;
+    this.queryString = queryString;
+  }
+  filtering() {
+    const queryobj = { ...this.queryString };
+    console.log(queryobj);
+    const excludedfields = ["page", "sort", "limit"];
+    excludedfields.forEach(el => delete queryobj[el]);
+    let querystr = JSON.stringify(queryobj);
+    console.log(querystr);
+    querystr = querystr.replace(/\b(gte|gt|lt|lte)\b/g, match => `$${match}`);
+    console.log(querystr);
+    this.query.find(JSON.parse(querystr));
+    return this;
+  }
+  sorting() {
+    if (this.query.sort) {
+      const sortby = this.queryString.sort.split(",").join(" ");
+      this.query = this.query.sort(sortby);
+    } else {
+      this.query = this.query.sort("-createAt");
+    }
+    return this;
+  }
+  paginating() {}
+}
+
 // get all products
 router.get("/", async (req, res) => {
-  console.log("ay ma");
+  console.log("req", req.query);
   try {
-    const products = await Products.find();
+    console.log("req2", req.query);
+
+    const features = new APIfeatures(Products.find(), req.query)
+      .filtering()
+      .sorting();
+    console.log("req3", req.query);
+
+    const products = await features.query;
     res.status(200).json({
       status: "success",
       results: products.length,
